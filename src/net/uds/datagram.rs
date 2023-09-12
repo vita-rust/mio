@@ -44,6 +44,7 @@ impl UnixDatagram {
     }
 
     /// Create an unnamed pair of connected sockets.
+    #[cfg(not(target_os = "vita"))]
     pub fn pair() -> io::Result<(UnixDatagram, UnixDatagram)> {
         sys::uds::datagram::pair().map(|(socket1, socket2)| {
             (

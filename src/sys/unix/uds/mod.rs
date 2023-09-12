@@ -15,7 +15,9 @@ pub(in crate::sys) fn path_offset(sockaddr: &libc::sockaddr_un) -> usize {
 
 cfg_os_poll! {
     use std::cmp::Ordering;
-    use std::os::unix::io::{RawFd, FromRawFd};
+    use std::os::unix::io::{RawFd};
+    #[cfg(not(target_os = "vita"))]
+    use std::os::unix::io::{FromRawFd};
     use std::{io, mem};
 
     pub(crate) mod datagram;
@@ -71,6 +73,7 @@ cfg_os_poll! {
         Ok((sockaddr, socklen as libc::socklen_t))
     }
 
+    #[cfg(not(any(target_os = "vita")))]
     fn pair<T>(flags: libc::c_int) -> io::Result<(T, T)>
         where T: FromRawFd,
     {
@@ -81,7 +84,6 @@ cfg_os_poll! {
             target_os = "tvos",
             target_os = "watchos",
             target_os = "espidf",
-            target_os = "vita",
         )))]
         let flags = flags | libc::SOCK_NONBLOCK | libc::SOCK_CLOEXEC;
 
@@ -102,7 +104,6 @@ cfg_os_poll! {
             target_os = "tvos",
             target_os = "watchos",
             target_os = "espidf",
-            target_os = "vita",
         ))]
         {
             syscall!(fcntl(fds[0], libc::F_SETFL, libc::O_NONBLOCK))?;

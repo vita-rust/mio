@@ -22,6 +22,7 @@ pub(crate) fn unbound() -> io::Result<net::UnixDatagram> {
     Ok(unsafe { net::UnixDatagram::from_raw_fd(fd) })
 }
 
+#[cfg(not(target_os = "vita"))]
 pub(crate) fn pair() -> io::Result<(net::UnixDatagram, net::UnixDatagram)> {
     super::pair(libc::SOCK_DGRAM)
 }

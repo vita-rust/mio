@@ -52,6 +52,7 @@ impl UnixStream {
     /// Creates an unnamed pair of connected sockets.
     ///
     /// Returns two `UnixStream`s which are connected to each other.
+    #[cfg(not(target_os = "vita"))]
     pub fn pair() -> io::Result<(UnixStream, UnixStream)> {
         sys::uds::stream::pair().map(|(stream1, stream2)| {
             (UnixStream::from_std(stream1), UnixStream::from_std(stream2))
