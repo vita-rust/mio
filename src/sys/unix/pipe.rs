@@ -17,6 +17,7 @@ pub(crate) fn new_raw() -> io::Result<[RawFd; 2]> {
         target_os = "openbsd",
         target_os = "illumos",
         target_os = "redox",
+        target_os = "vita",
     ))]
     unsafe {
         if libc::pipe2(fds.as_mut_ptr(), libc::O_CLOEXEC | libc::O_NONBLOCK) != 0 {
@@ -31,7 +32,6 @@ pub(crate) fn new_raw() -> io::Result<[RawFd; 2]> {
         target_os = "tvos",
         target_os = "watchos",
         target_os = "espidf",
-        target_os = "vita",
     ))]
     unsafe {
         // For platforms that don't have `pipe2(2)` we need to manually set the
